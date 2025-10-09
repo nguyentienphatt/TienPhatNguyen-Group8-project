@@ -11,3 +11,4 @@ res.json({ message: "User deleted (A1)" \}\);
 res.json({ message: "User deleted (B1)" \}\);
 >>>>>>> ac9fd21 (backend-conflict3: set message B1)
 };
+ 
