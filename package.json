@@ -1,11 +1,18 @@
 {
+<<<<<<< HEAD
   "name": "tienphatnguyen-group8-project",
   "version": "1.0.0",
   "description": "- Họ và tên: Nguyễn Thanh Tính - Nhóm: group<nhom8>-project  - Vai trò:Frontend Developer",
+=======
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+>>>>>>> 6faee87 (Hoạt động 7: CRUD PUT/DELETE + fix routes)
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+<<<<<<< HEAD
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nguyentienphatt/TienPhatNguyen-Group8-project.git"
@@ -22,6 +29,14 @@
     "express": "^5.1.0"
   },
   "devDependencies": {
+=======
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+>>>>>>> 6faee87 (Hoạt động 7: CRUD PUT/DELETE + fix routes)
     "nodemon": "^3.1.10"
   }
 }
