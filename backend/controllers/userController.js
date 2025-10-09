@@ -5,5 +5,9 @@ exports.deleteUser = (req, res) => {
   if (users.length === before) return res.status(404).json({ message: "User not found" });
 
   // >>> THAY DÒNG NÀY THÀNH PHIÊN BẢN A <<<
+<<<<<<< HEAD
 res.json({ message: "User deleted (A1)" \}\);
+=======
+res.json({ message: "User deleted (B1)" \}\);
+>>>>>>> ac9fd21 (backend-conflict3: set message B1)
 };
