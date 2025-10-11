@@ -1,28 +1,29 @@
-let users = [];
+const User = require('../models/User');
 
-exports.getUsers = (req, res) => res.json(users);
-
-exports.createUser = (req, res) => {
-  const { name, email } = req.body;
-  if (!name || !email) return res.status(400).json({ message: 'name và email là bắt buộc' });
-  const id = users.length ? users[users.length - 1].id + 1 : 1;
-  const newUser = { id, name, email };
-  users.push(newUser);
-  res.status(201).json(newUser);
+// GET /users
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await User.find().sort({ createdAt: -1 });
+    res.json(users);
+  } catch (err) {
+    console.error('GET /users error:', err);
+    res.status(500).json({ message: 'Lỗi server khi lấy danh sách users' });
+  }
 };
 
-exports.createUsersBulk = (req, res) => {
-  if (!Array.isArray(req.body)) {
-    return res.status(400).json({ message: 'Body phải là mảng users' });
-  }
-  const created = [];
-  req.body.forEach(({ name, email }) => {
-    if (name && email) {
-      const id = users.length ? users[users.length - 1].id + 1 : 1;
-      const u = { id, name, email };
-      users.push(u);
-      created.push(u);
+// POST /users
+exports.createUser = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+    if (!name || !email) {
+      return res.status(400).json({ message: 'name và email là bắt buộc' });
     }
-  });
-  res.status(201).json(created);
+    const doc = await User.create({ name, email });
+    console.log('✅ Created user:', doc);
+    res.status(201).json(doc); // <-- trả về document MongoDB với _id
+  } catch (err) {
+    console.error('POST /users error:', err);
+    if (err.code === 11000) return res.status(409).json({ message: 'Email đã tồn tại' });
+    res.status(500).json({ message: 'Lỗi server khi tạo user' });
+  }
 };
