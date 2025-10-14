@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <title>Quản lý người dùng</title>
+  <style>
+    table { width: 80%; margin: 40px auto; border-collapse: collapse; }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    thead th { background: #1e66ff; color: #fff; }
+    .btn-delete { background:#ff4d4f; color:#fff; border:none; padding:6px 10px; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center">👑 Quản lý người dùng</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tên</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody id="userTableBody"><!-- HÀNG SẼ ĐƯỢC ĐỔ VÀO ĐÂY --></tbody>
+  </table>
+
+  <!-- ĐẶT SCRIPT SAU BẢNG -->
+  <script>
+  window.addEventListener('DOMContentLoaded', async () => {
+    const tableBody = document.getElementById('userTableBody'); // PHẢI TỒN TẠI
+    if (!tableBody) {
+      alert('Thiếu <tbody id="userTableBody"> trong admin.html');
+      return;
+    }
+
+    const token = localStorage.getItem('jwt');
+    if (!token) {
+      alert('Bạn chưa đăng nhập. Chuyển tới /login');
+      return location.href = '/login';
+    }
+
+    try {
+      const res = await fetch('/users', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+
+      if (res.status === 401) {
+        alert('Token hết hạn/thiếu. Đăng nhập lại.');
+        return location.href = '/login';
+      }
+      if (res.status === 403) {
+        alert('Bạn không có quyền Admin.');
+        return;
+      }
+      if (!res.ok) throw new Error(await res.text() || 'Lỗi khi tải danh sách');
+
+      const data = await res.json();
+      const users = Array.isArray(data) ? data : (data.users || []);
+      tableBody.innerHTML = '';
+
+      users.forEach(u => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${u.name || ''}</td>
+          <td>${u.email || ''}</td>
+          <td>${u.role || 'user'}</td>
+          <td><button class="btn-delete" data-id="${u._id}">Xoá</button></td>
+        `;
+        tableBody.appendChild(tr);
+      });
+
+      tableBody.addEventListener('click', async (e) => {
+        const btn = e.target.closest('.btn-delete');
+        if (!btn) return;
+        const id = btn.dataset.id;
+        if (!confirm('Chắc chắn xoá user này?')) return;
+
+        const del = await fetch('/users/' + id, {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+
+        if (del.ok) btn.closest('tr').remove();
+        else alert('Xoá thất bại: ' + (await del.text()));
+      });
+    } catch (e) {
+      alert('Không tải được danh sách: ' + e.message);
+      console.error(e);
+    }
+  });
+  </script>
+</body>
+</html>

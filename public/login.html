@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Đăng nhập</title>
+  <style>
+    body{font-family:system-ui;background:#f5f6ff;margin:0;display:flex;align-items:center;justify-content:center;height:100vh}
+    .card{width:380px;background:#fff;border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.08);padding:28px}
+    h2{margin:0 0 18px}
+    .input{width:100%;padding:12px 14px;margin:8px 0;border:1px solid #e5e7eb;border-radius:10px;font-size:14px}
+    .btn{width:100%;padding:12px 14px;border:0;border-radius:10px;background:#6366f1;color:#fff;font-weight:600;cursor:pointer}
+    .btn:active{transform:translateY(1px)}
+    .muted{color:#6b7280;font-size:12px;margin-top:10px;text-align:center}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Đăng nhập</h2>
+    <input id="email" class="input" type="email" placeholder="Email" value="admin1@gmail.com" />
+    <input id="password" class="input" type="password" placeholder="Mật khẩu" value="123456" />
+    <button id="loginBtn" class="btn">Đăng nhập</button>
+    <div class="muted">Trang demo gọi API /auth/login và hiển thị token</div>
+  </div>
+
+  <script>
+    const API = location.origin + '/auth/login'; // http://localhost:3000/auth/login
+
+    document.getElementById('loginBtn').onclick = async () => {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      try {
+        const res = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          alert('Đăng nhập thất bại: ' + (data.message || res.status));
+          return;
+        }
+        // Lưu token nếu muốn dùng cho các request sau
+        localStorage.setItem('jwt', data.token);
+        alert('Đăng nhập thành công! Token:\n' + data.token);
+      } catch (e) {
+        alert('Lỗi kết nối: ' + e.message);
+      }
+    };
+  </script>
+</body>
+</html>
