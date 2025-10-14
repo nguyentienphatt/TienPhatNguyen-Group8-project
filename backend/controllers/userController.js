@@ -1,14 +1,24 @@
-exports.deleteUser = (req, res) => {
-  const { id } = req.params;
-  const before = users.length;
-  users = users.filter(u => u.id != id);
-  if (users.length === before) return res.status(404).json({ message: "User not found" });
+// backend/controllers/userController.js
+const User = require('../models/User'); // đảm bảo file models/User.js tồn tại
 
-  // >>> THAY DÒNG NÀY THÀNH PHIÊN BẢN A <<<
-<<<<<<< HEAD
-res.json({ message: "User deleted (A1)" \}\);
-=======
-res.json({ message: "User deleted (B1)" \}\);
->>>>>>> ac9fd21 (backend-conflict3: set message B1)
+exports.getUsers = async (_req, res) => {
+  const list = await User.find();
+  res.json(list);
 };
- 
+
+exports.createUser = async (req, res) => {
+  const u = await User.create(req.body);
+  res.status(201).json(u);
+};
+
+exports.updateUser = async (req, res) => {
+  const u = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  if (!u) return res.status(404).json({ message: 'Not found' });
+  res.json(u);
+};
+
+exports.deleteUser = async (req, res) => {
+  const u = await User.findByIdAndDelete(req.params.id);
+  if (!u) return res.status(404).json({ message: 'Not found' });
+  res.json({ message: 'deleted', id: req.params.id });
+};
