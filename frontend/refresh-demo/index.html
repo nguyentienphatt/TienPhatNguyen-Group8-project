@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Refresh Token Demo</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:24px}
+    label{display:block;margin-top:8px}
+    pre{background:#f6f8fa;padding:12px;border-radius:6px}
+  </style>
+</head>
+<body>
+  <h2>Demo Refresh Token (SV1)</h2>
+
+  <div>
+    <label>Email <input id="email" value="test@example.com"></label>
+    <label>Password <input id="password" value="password" type="password"></label>
+    <button id="btnLogin">Login</button>
+  </div>
+
+  <hr>
+  <div>
+    <button id="btnMe">Call /auth/me (protected)</button>
+    <button id="btnLogout">Logout</button>
+  </div>
+
+  <h3>Status</h3>
+  <pre id="log">Ready</pre>
+
+  <script src="app.js"></script>
+</body>
+</html>
