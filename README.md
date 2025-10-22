@@ -1,10 +1,26 @@
-# Thông tin thành viên
+# Vai trò của tôi trong dự án
 
-**Họ và tên:** Nguyễn Tiến Phát  
-**Vai trò:** Backend Developer  
-**Công nghệ sử dụng:** Node.js, Express  
+- Họ và tên: Nguyễn Thanh Tính
+- Nhóm: group<nhom8>-project 
+- Vai trò:Frontend Developer
 
-**Nhiệm vụ:**  
-- Xây dựng API server  
-- Thiết kế các route và controller  
-- Xử lý logic phía server  
+Nhiệm vụ chính
+- Thiết lập môi trường React trong thư mục /frontend
+- Xây dựng giao diện người dùng (UI) bằng React + TailwindCSS
+- Kết nối với API từ backend (Node.js + Express)
+
+ Công cụ sử dụng
+- Visual Studio Code
+- Node.js (LTS)
+- React.js
+- Git & GitHub
+
+Nhánh làm việc cá nhân
+- Tên nhánh: frontend
+- Lệnh tạo nhánh:
+  git checkout main
+  git pull origin main
+  git checkout -b frontend
+  git push origin frontend
+
+
