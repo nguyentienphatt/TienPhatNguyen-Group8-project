@@ -34,6 +34,8 @@ app.use('/auth', require('./routes/auth'));
 // app.use('/upload', require('./routes/upload')); // Comment out for now
 app.use('/users', require('./routes/user'));
 app.use('/api/admin', require('./routes/admin')); // New RBAC admin routes
+app.use('/api/avatar', require('./routes/avatar')); // New avatar upload routes
+app.use('/api/logs', require('./routes/logs')); // Admin activity logs routes
 
 const startServer = () => {
   const port = process.env.PORT || 3000; // Changed to port 3000
