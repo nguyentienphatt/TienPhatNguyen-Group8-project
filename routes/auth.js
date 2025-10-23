@@ -5,7 +5,9 @@ const {
   register,
   login,
   getProfile,
-  seedUsers
+  seedUsers,
+  forgotPassword,
+  resetPassword
 } = require('../controllers/authController');
 
 /**
@@ -30,5 +32,18 @@ router.get('/profile', requireAuth, getProfile);
  * POST /auth/seed-users - Tạo users mẫu cho testing (dev-only)
  */
 router.post('/seed-users', seedUsers);
+
+/**
+ * POST /auth/forgot-password - Gửi email reset password
+ * Body: { email }
+ */
+router.post('/forgot-password', forgotPassword);
+
+/**
+ * POST /auth/reset-password/:token - Reset password với token
+ * Params: { token }
+ * Body: { newPassword }
+ */
+router.post('/reset-password/:token', resetPassword);
 
 module.exports = router;
