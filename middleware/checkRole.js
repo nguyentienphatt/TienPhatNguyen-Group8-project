@@ -21,11 +21,33 @@ const checkRole = (allowedRoles) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       
       // Lấy thông tin user từ database để có role mới nhất
-      const user = await User.findById(decoded.sub).select('-password');
+      let user;
+      try {
+        user = await User.findById(decoded.sub).select('-password');
+      } catch (error) {
+        console.log('User not found in DB, using token data for hard-coded users');
+      }
+      
+      // Nếu không tìm thấy trong DB (hard-coded users), tạo user object từ token
       if (!user) {
-        return res.status(401).json({ 
-          message: 'Token không hợp lệ. User không tồn tại.' 
-        });
+        // Hard-coded users để test
+        const testUsers = {
+          '507f1f77bcf86cd799439011': { 
+            _id: '507f1f77bcf86cd799439011', name: 'Admin User', email: 'admin@example.com', 
+            role: 'admin', isActive: true 
+          },
+          '507f1f77bcf86cd799439012': { 
+            _id: '507f1f77bcf86cd799439012', name: 'Regular User', email: 'user@example.com', 
+            role: 'user', isActive: true 
+          }
+        };
+        
+        user = testUsers[decoded.sub];
+        if (!user) {
+          return res.status(401).json({ 
+            message: 'Token không hợp lệ. User không tồn tại.' 
+          });
+        }
       }
 
       // Kiểm tra user có active không

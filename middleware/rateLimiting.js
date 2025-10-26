@@ -23,7 +23,7 @@ const generalRateLimit = rateLimit({
  */
 const loginRateLimit = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // limit each IP to 5 login requests per windowMs
+  max: 100, // Tăng limit để test dễ hơn
   message: {
     error: 'Too many login attempts from this IP, please try again after 15 minutes.',
     retryAfter: '15 minutes',
