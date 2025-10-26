@@ -1,5 +1,20 @@
 // ✅ controllers/userController.js (tối thiểu)
-let users = [];
+let users = [
+  {
+    id: '507f1f77bcf86cd799439011',
+    name: 'Admin User',
+    email: 'admin@example.com',
+    role: 'admin',
+    isActive: true
+  },
+  {
+    id: '507f1f77bcf86cd799439012', 
+    name: 'Regular User',
+    email: 'user@example.com',
+    role: 'user',
+    isActive: true
+  }
+];
 
 exports.getUsers = (req, res) => res.json(users);
 

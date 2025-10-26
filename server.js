@@ -34,9 +34,14 @@ app.use('/auth', require('./routes/auth'));
 // app.use('/upload', require('./routes/upload')); // Comment out for now
 app.use('/users', require('./routes/user'));
 app.use('/api/admin', require('./routes/admin')); // New RBAC admin routes
+app.use('/api/avatar', require('./routes/avatar')); // New avatar upload routes
+app.use('/api/logs', require('./routes/logs')); // Admin activity logs routes
+
+// 🔒 ACTIVITY 6: Protected Routes for Redux Testing
+app.use('/protected', require('./routes/protected')); // New protected routes for Activity 6
 
 const startServer = () => {
-  const port = process.env.PORT || 3000; // Changed to port 3000
+  const port = process.env.PORT || 5000; // Backend on port 5000
   const host = process.env.HOST || '127.0.0.1'; // Changed to localhost only
   const server = app.listen(port, host, () => {
     console.log(`🚀 Server running on ${host}:${port}`);
