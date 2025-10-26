@@ -1,0 +1,127 @@
+{
+  "info": {
+    "name": "Activity 5 - User Activity Logging & Rate Limiting",
+    "description": "Postman collection để test Activity 5 - SV1 middleware implementation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:3000/health",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "3000",
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "2. Test Rate Limiting (Core SV1 Feature)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"test\": \"rate limiting\"\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:3000/auth/test-rate-limit",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "3000",
+          "path": ["auth", "test-rate-limit"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Test rate limiting response",
+              "if (pm.response.code === 200) {",
+              "    pm.test('Rate limit test passed', function () {",
+              "        pm.response.to.have.status(200);",
+              "        pm.expect(pm.response.json().success).to.be.true;",
+              "    });",
+              "} else if (pm.response.code === 429) {",
+              "    pm.test('Rate limiting triggered successfully', function () {",
+              "        pm.response.to.have.status(429);",
+              "        pm.expect(pm.response.json().error).to.exist;",
+              "    });",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Debug Register (Check JSON parsing)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Test Activity5\",\n  \"email\": \"activity5@test.com\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:3000/auth/debug-register",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "3000",
+          "path": ["auth", "debug-register"]
+        }
+      }
+    },
+    {
+      "name": "4. Seed Users (Create test users)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:3000/auth/seed-users",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "3000",
+          "path": ["auth", "seed-users"]
+        }
+      }
+    },
+    {
+      "name": "5. Login Test (with Rate Limiting)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"wrongpassword\"\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:3000/auth/login",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "3000",
+          "path": ["auth", "login"]
+        }
+      }
+    }
+  ]
+}
